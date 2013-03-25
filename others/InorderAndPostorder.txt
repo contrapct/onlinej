@@ -1,0 +1,29 @@
+class Solution {
+public:
+    map <int,int> position;
+    int poz_postorder;
+    
+    TreeNode *construct (int st,int dr,vector<int> &postorder) {
+        if (st>dr)
+            return NULL;
+    
+        int curent=postorder[poz_postorder--];
+    
+        TreeNode* root=new TreeNode (curent);
+        root->right=construct (position[curent]+1,dr,postorder);
+        root->left=construct (st,position[curent]-1,postorder);
+    
+        return root;
+    }
+    
+    TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        position.clear ();
+        for (int i=0; i<inorder.size (); ++i)
+            position[inorder[i]]=i;
+        poz_postorder=postorder.size ()-1;
+    
+        return construct (0,inorder.size ()-1,postorder);
+    }
+};

@@ -1,0 +1,59 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> p;
+    vector<int> q;
+    
+    void Inordine(TreeNode * root ) {
+        if( root == NULL){ 
+            return;
+        }
+        Inordine(root->left);
+        p.push_back(root->val);
+        Inordine(root->right);
+    }
+    TreeNode *  Cauta(TreeNode * root, int val ) {
+        if( root == NULL){ 
+            return NULL;            
+        }
+        if(root->val == val){
+            return root;
+        }
+        TreeNode * stanga = Cauta(root->left,val);
+        TreeNode * dreapta = Cauta(root->right,val);
+        if(stanga == NULL) 
+            return dreapta;
+        return stanga;
+    }    
+    
+    void recoverTree(TreeNode *root) {
+        Inordine(root);
+        if(p.size() <=1 ) 
+            return;
+        
+        int el1=0,el2=0;
+        for(int i=0;i<p.size();++i){
+            q.push_back(p[i]);
+        }
+        sort(q.begin(),q.end());
+        
+        for(int i=0;i<p.size();++i){
+            if(p[i]!=q[i]){el1 = p[i]; el2 =q[i]; break;}
+        }
+        TreeNode * schimba1 = Cauta(root,el1);
+        TreeNode * schimba2 = Cauta(root,el2);
+        if(schimba1!=NULL && schimba2!=NULL)
+        { schimba1->val = el2;
+         schimba2->val = el1;
+         
+        }
+    }
+};

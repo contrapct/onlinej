@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char> > &board) {
+        unordered_set <int> s;
+        int i,j,k,l,t;
+        //linie
+        for(i=0;i<9;++i){
+            s.clear ();
+            for(j=0;j<9;++j){
+                if(board[i][j]=='.') continue;
+                if(s.find(board[i][j]) !=s.end()) return false;
+                else s.insert(board[i][j]);
+            }
+        }
+        
+        //coloana
+        for(i=0;i<9;++i){
+            s.clear ();
+            for(j=0;j<9;++j){
+                if(board[j][i]=='.') continue;
+                if(s.find(board[j][i]) !=s.end()) return false;
+                else s.insert(board[j][i]);
+            }
+        }
+         
+         
+         //patrate
+         for(t=0;t<9;++t){
+             s.clear ();
+             k=(t/3)*3; l=(t%3)*3;
+             for(i=0;i<3;++i){
+                 for(j=0;j<3;++j){
+                     if(board[i+k][j+l]=='.') continue;
+                    if(s.find(board[i+k][j+l]) !=s.end()) return false;
+                        else s.insert(board[i+k][j+l]);
+                 }
+             }
+         }
+         
+        return true;
+    }
+};

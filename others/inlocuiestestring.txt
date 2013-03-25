@@ -1,0 +1,49 @@
+// Type your C++ code and click the "Run Code" button!
+// Your code output will be shown on the left.
+// Click on the "Show input" button to enter input data to be read (from stdin).
+
+#include <iostream>
+using namespace std;
+void replace(char * str,const char * pattern){
+    if(str ==NULL || pattern == NULL) 
+        return; 
+    int i=0;
+    int poz = 0;
+    int j = 0;
+	int ok  = 0;
+    while(str[i]!='\0'){
+        if(str[i] == pattern[0]){
+            j=1;
+            int k=i+1;
+            while(str[k]!='\0' && pattern[j]!='\0' && pattern[j]==str[k]){                
+                ++k;++j;
+            }
+            if(pattern[j]=='\0'){
+				if(ok == 0){
+                str[poz]='X';
+				++poz;}
+				i = k;
+				ok = 1;
+				continue;
+            }
+		}else{ok = 0;}
+        str[poz] = str[i];
+        ++i; 		
+        ++poz;
+    }
+	str[poz]='\0';
+}
+int main() {
+    // Start typing your code here...
+    char * str ; 
+    const char * pattern;
+    string ststr="abcdeffdfegabcabc";
+    string patt = "abc";
+    str = new char[ststr.length() + 1];
+strcpy(str, ststr.c_str());
+    pattern = patt.c_str();
+    replace(str,pattern);
+    cout<<str;
+    
+    return 0;
+}

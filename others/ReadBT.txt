@@ -1,0 +1,48 @@
+#include<cstdio>
+#include<list>
+#include<vector>
+using namespace std;
+
+ struct TreeNode {
+     int val;
+     TreeNode *left;
+     TreeNode *right;
+     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+class Solution {
+public:
+    TreeNode *buildTree(vector<char> &preorder, int &nr){
+        if(nr == preorder.size() || preorder[nr] == '#' ){ nr ++ ; return NULL;}   
+
+        TreeNode * root = new TreeNode(preorder[nr]);
+        ++nr;
+        if( nr != preorder.size()) {
+                root->left = buildTree(preorder,nr);
+            }
+        if( nr != preorder.size()){
+            root->right = buildTree(preorder,nr);
+        }
+        return root;
+    }   
+};
+
+int main(){
+	vector<char> preorder ;
+	preorder.push_back('3');
+	preorder.push_back('1');
+	preorder.push_back('#');
+	preorder.push_back('#');
+	preorder.push_back('2');
+	preorder.push_back('4');
+	preorder.push_back('#');
+	preorder.push_back('#');
+	preorder.push_back('5');
+	preorder.push_back('#');
+	preorder.push_back('#');
+
+	Solution obj;
+	int n =0;
+	obj.buildTree(preorder,n);
+	return 0;
+}
