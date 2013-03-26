@@ -1,0 +1,134 @@
+http://en.wikipedia.org/wiki/Cactus_graph
+
+In graph theory, a cactus graph (sometimes called a cactus tree) is a connected graph in which any two simple cycles have at most one vertex in common. Equivalently, every edge in such a graph belongs to at most one simple cycle. Equivalently, every block (maximal subgraph without a cut-vertex) is an edge or a cycle.
+
+Given a cactus graph determine the number of different spanning trees you can make from it.
+
+const int NMAX=100000;
+
+void DFS (int node,int current_level,int &result) {
+    static int lvl[NMAX];
+
+    lvl[node]=current_level;
+    for (auto it=G[node].begin (); it!=G[node].end (); ++it)
+        if (lvl[*it]==0) //unvisited
+            DFS (*it,current_level+1);
+        else if (lvl[node]-1>lvl[*it])
+            result*=(lvl[node]-lvl[*it]+1);
+}   
+
+int get_number_spanning_tree () {
+    int result=1;    
+    
+    DFS (1,1,result);
+    return result;
+}
+
+==========================================
+
+Q: Subsequences
+
+Given a really large string T and a stream of smaller strings S, we want to determine for each Si if it is a subsequence of T.
+
+|T| = 10,000,000 chars
+|S| = 100,000,000 strings
+|S_i| = 100 chars
+
+Alphabet is lowercase English characters 'a' to 'z'.
+
+Example:
+T = abcdefg
+S1 = abc        yes
+S2 = ag          yes
+S3 = ga          no
+S4 = aa          no
+
+const int NMAX=10000000;
+const int SIGMA=26;
+
+int pos[NMAX][SIGMA];
+
+void precompute () {
+
+    for (int i=1; i<=T.size (); ++i)
+        for (char j='a'; j<='z' ;++j)
+            if (T[i-1]==j)
+                pos[i][j-'a']=i;
+            else
+                pos[i][j-'a']=pos[i-1][j-'a'];
+}
+
+string query (string Si) {
+    current_posion=T.size ()+1;    
+    for (int i=Si.size (); i>=1; --i)
+        current_position=pos[current_position-1][Si[i-1]-'a'];
+        
+    if (current_position>0)
+        return "yes";
+    return "no";
+}
+
+
+
+================================
+
+Q: Dog and Rabbit
+
+A dog is chasing a rabbit through an undirected graph. The dog gets to move along an edge (or stay still) once per second,
+and the rabbit must stay still. Every k seconds, the rabbit may jump to any node in the graph (it doesn't have to move along 
+an edge). The dog's goal is to catch the rabbit as quickly as possible, and the rabbit's goal is to stay alive as long as 
+possible. Both will play optimally.
+
+Given a graph G, a value for k, and a starting position for the dog, determine how long it will take for the dog to 
+catch the rabbit, or if the rabbit will never be caught. The dog and rabbit know each other's position at all times,
+and the rabbit may choose its own starting position.
+
+Input:
+A graph G
+An integer D, the starting node of the dog
+An integer K, the number of seconds between jumps.
+
+Output:
+The number of seconds before the dog catches the rabbit, or -1/"IMPOSSIBLE" if it never does.
+
+int dst[MAXN][MAXN];
+
+void BFS (int start) {
+    int inQ[MAXN];
+    queue <int> Q;
+    
+    memset (inQ,0,sizeof (inQ));
+    for (Q.push (start); !Q.empty (); Q.pop ()) {
+        int current=Q.front ();
+        
+        for (auto G[current].begin (); it!=G[current].end (); ++it)
+            if (!inQ[*it]) {
+                dst[start][*it]=dst[start][current]+1;
+                inQ[*it]=1; Q.push (*it);
+            }
+    }
+}
+
+int works (int start) {
+    int max_value=0;
+    
+    for (int i=1; i<=N; ++i)
+        if (dst[start][i]>K)
+            return NMAX;
+        else
+            max_value=max (max_value,dst[start][i]);
+            
+    return max_value;
+}
+
+int compute () {
+    for (int i=1; i<=N; ++i)
+        BFS (i));
+    
+    int value=NMAX;
+    value=works (D);
+    for (int i=1; i<=N; ++i)
+        value=min (value,K+works (i));
+    
+    return value;
+}
